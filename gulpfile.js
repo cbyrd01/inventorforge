@@ -72,3 +72,6 @@ gulp.task('clean', function(){
   return del('www/build');
 });
 gulp.task('lint', tslint);
+
+gulp.task('default', ['build']);
+
