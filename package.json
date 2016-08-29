@@ -1,19 +1,26 @@
 {
   "dependencies": {
-    "@angular/common": "2.0.0-rc.3",
-    "@angular/compiler": "2.0.0-rc.3",
-    "@angular/core": "2.0.0-rc.3",
-    "@angular/http": "2.0.0-rc.3",
-    "@angular/platform-browser": "2.0.0-rc.3",
-    "@angular/platform-browser-dynamic": "2.0.0-rc.3",
     "es6-shim": "^0.35.0",
-    "ionic-angular": "2.0.0-beta.10",
+    "ionic-angular": "~2.0.0",
     "ionic-native": "1.3.2",
     "ionicons": "3.0.0",
     "reflect-metadata": "^0.1.3",
     "rxjs": "5.0.0-beta.6",
     "socket.io-client": "^1.4.8",
-    "zone.js": "^0.6.12"
+    "zone.js": "^0.6.12",
+    "gulp-watch": "~4.3.9",
+    "gulp": "~3.9.1",
+    "del": "~2.2.2",
+    "run-sequence": "~1.2.2",
+    "ionic": "~2.0.0",
+    "ionic-gulp-browserify-typescript": "~2.0.0",
+    "ionic-gulp-sass-build": "~1.0.0",
+    "ionic-gulp-html-copy": "~1.0.0",
+    "ionic-gulp-fonts-copy": "~1.0.0",
+    "ionic-gulp-scripts-copy": "~2.0.1",
+    "ionic-gulp-tslint": "~1.1.0",
+    "angular": "~1.5.8",
+    "typescript": "~1.8.10"
   },
   "devDependencies": {
     "browserify": "^13.0.1",
@@ -58,5 +65,7 @@
     "run": "ionic serve"
   },
   "name": "inventorforge",
-  "description": "inventorforge: An Ionic project"
+  "description": "inventorforge: An Ionic project",
+  "version": "0.0.1",
+  "repository": "github:InventorForgeMakerspace/inventorforge"
 }
