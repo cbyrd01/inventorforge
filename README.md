@@ -1,4 +1,4 @@
-# inventorforge
+# inventorforge [![Build Status](https://travis-ci.org/InventorForgeMakerspace/inventorforge.svg?branch=master)](https://travis-ci.org/InventorForgeMakerspace/inventorforge)
 InventorForge App
 
 ## To Build
