@@ -9,3 +9,6 @@ plugins/
 .DS_Store
 Thumbs.db
 npm-debug.log
+server.js
+app/npm-debug.log
+typings/

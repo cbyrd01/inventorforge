@@ -5,16 +5,13 @@
  */
 
 // See https://github.com/GerritErpenstein/ionic2-slides-temp-fix/
-export function waitRendered(element:HTMLElement):Promise<HTMLElement> {
-    return new Promise((resolve) => {
-        let checkNextFrame = () => {
-            requestAnimationFrame(() => {
-                if (element.clientWidth)
-                    resolve(element);
-                else
-                    checkNextFrame();
-            });
-        };
-        checkNextFrame();
-    });
+export function waitRendered(element: HTMLElement): Promise<HTMLElement> {
+  return new Promise((resolve) => {
+    let checkNextFrame = () => {
+      requestAnimationFrame(() => {
+        if (element.clientWidth) { resolve(element); } else { checkNextFrame(); }
+      });
+    };
+    checkNextFrame();
+  });
 }
