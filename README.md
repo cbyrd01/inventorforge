@@ -6,12 +6,20 @@ InventorForge App
 1. Install dependencies
 
 ```bash
+npm install -g ionic@beta
+npm install -g typings
 npm install
+typings install
 ```
 
 2. Build
 
 ```bash
-gulp
+ionic build
 ```
 
+3. Serve
+
+```bash
+ionic serve
+```
