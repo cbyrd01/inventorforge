@@ -1,8 +1,9 @@
 language: node_js
 node_js: node
 install:
-- npm install -g gulp
+- npm install -g ionic@beta
+- npm install -g typings
 - npm install
+- typings install
 script:
-- gulp
-
+- ionic build
