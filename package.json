@@ -61,13 +61,9 @@
     }
   ],
   "scripts": {
-    "start": "node ./server.js"
+    "test": "karma start karma.conf.js",
+    "run": "ionic serve"
   },
   "name": "inventorforge",
-  "description": "inventorforge: An Ionic project",
-  "version": "0.0.1",
-  "repository": "github:InventorForgeMakerspace/inventorforge",
-  "engines": {
-    "node": "~5.6"
-  }
+  "description": "inventorforge: An Ionic project"
 }
