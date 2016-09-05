@@ -33,8 +33,15 @@ var copyHTML = require('ionic-gulp-html-copy');
 var copyFonts = require('ionic-gulp-fonts-copy');
 var copyScripts = require('ionic-gulp-scripts-copy');
 var tslint = require('ionic-gulp-tslint');
+var typescript = require('gulp-typescript');
 
 var isRelease = argv.indexOf('--release') > -1;
+
+gulp.task('compile-server', function() {
+  gulp.src(['server.ts'])
+    .pipe(typescript())
+    .pipe(gulp.dest('.'))
+});
 
 gulp.task('watch', ['clean'], function(done){
   runSequence(

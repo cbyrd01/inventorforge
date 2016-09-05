@@ -12,3 +12,5 @@ npm-debug.log
 server.js
 app/npm-debug.log
 typings/
+app/**/*.js
+*.map
