@@ -16,7 +16,7 @@ var state : {letter: number, red: number, green: number, blue: number}[] = [
   {letter: 3, red: 0, green: 0, blue: 0},
   {letter: 4, red: 0, green: 0, blue: 0}];
 
-app.use(express.static('www'));
+app.use(express.static('../www'));
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");

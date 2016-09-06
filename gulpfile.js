@@ -38,9 +38,9 @@ var typescript = require('gulp-typescript');
 var isRelease = argv.indexOf('--release') > -1;
 
 gulp.task('compile-server', function() {
-  gulp.src(['server.ts'])
+  gulp.src(['server/**/*.ts'])
     .pipe(typescript())
-    .pipe(gulp.dest('.'))
+    .pipe(gulp.dest('server/'))
 });
 
 gulp.task('watch', ['clean'], function(done){
