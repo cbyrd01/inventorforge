@@ -46,4 +46,16 @@ node server/server.js
 
 3. Access the page
 
-http://localhost:8080/index.html
+(http://localhost:8080/index.html)
+
+## Configuration
+
+The main configuration is stored in `config.json`.  Configuration can also be
+specified via command line argument or environment variables.  See
+[nconf](https://www.npmjs.com/package/nconf) for information on how these are
+set.
+
+Note: By default `serial:disable` is set to `true`.  To use on a sign, this
+must be set to false and `serial:port` and other options set appropriately.
+
+

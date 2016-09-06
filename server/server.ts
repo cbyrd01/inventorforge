@@ -2,6 +2,23 @@ import * as http from "http";
 import * as url from "url";
 import * as express from "express";
 import * as socketIO from "socket.io";
+import * as nconf from "nconf";
+
+// Load configuration options from command argument, environment, or config
+// file
+nconf.argv().env().file({ file: 'config.json' });
+// Set some defaults.  NOTE: disable is set to true both in here and the
+// default config.json file - edit or set through arguments or environment to
+// enable
+nconf.defaults({
+  "network": {
+    "port": 8080,
+    "host": "0.0.0.0"
+  },
+  "serial": {
+    "disable": true
+  }
+});
 
 var app = express();
 
@@ -24,8 +41,9 @@ app.use(function(req, res, next) {
   next();
 });
 
-server.listen(8080, function() {
-  console.log('Server started on port 8080.');
+server.listen(nconf.get('network:port'), nconf.get('network:host'), function() {
+  console.log('Server started on host: ' + nconf.get('network:host') + 
+              ', port ' + nconf.get('network:port') + '.');
 });
 
 

@@ -4,6 +4,7 @@
   "globalDependencies": {
     "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504",
     "mime": "registry:dt/mime#0.0.0+20160316155526",
+    "nconf": "registry:dt/nconf#0.0.0+20160724073144",
     "socket.io-client": "registry:dt/socket.io-client#1.4.4+20160317120654"
   },
   "globalDevDependencies": {
