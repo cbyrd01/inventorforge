@@ -33,14 +33,40 @@ var copyHTML = require('ionic-gulp-html-copy');
 var copyFonts = require('ionic-gulp-fonts-copy');
 var copyScripts = require('ionic-gulp-scripts-copy');
 var tslint = require('ionic-gulp-tslint');
-var typescript = require('gulp-typescript');
 
 var isRelease = argv.indexOf('--release') > -1;
 
+
+var typescript = require('gulp-typescript');
 gulp.task('compile-server', function() {
   gulp.src(['server/**/*.ts'])
     .pipe(typescript())
     .pipe(gulp.dest('server/'))
+});
+
+var nodemon = require('gulp-nodemon');
+var runSequence = require('run-sequence');
+
+gulp.task('server', function(callback) {
+  runSequence('compile-server', 'run-server', callback);
+});
+
+// Start a node server
+gulp.task('run-server', function() {
+  nodemon({
+    script: 'server/server.js',
+    ext: 'ts',
+    env: {'NODE_ENV': 'development'},
+    tasks: ['compile-server']
+  });
+});
+
+// Allow for killing the server process
+process.on('SIGINT', function() {
+  setTimeout(function() {
+    gutil.log(gutil.colors.red('Successfully closed ' + process.pid));
+    process.exit(1);
+  }, 500);
 });
 
 gulp.task('watch', ['clean'], function(done){
