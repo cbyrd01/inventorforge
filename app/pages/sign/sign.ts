@@ -3,6 +3,7 @@ import {NavController} from 'ionic-angular';
 import {Slides} from 'ionic-angular';
 import {waitRendered} from './util';
 import {Letter} from '../../models/letter.interface';
+import {ConfigHolder} from '../../providers/config/configholder';
 import * as io from 'socket.io-client';
 
 
@@ -12,6 +13,7 @@ import * as io from 'socket.io-client';
 export class SignPage {
 
   private _socket: any;
+  private _config: any;
 
   @ViewChild('letterSlider') letterSlider: Slides;
 
@@ -23,8 +25,16 @@ export class SignPage {
     {label: 'E', red: 0, green: 0, blue: 0, bgcolor: '#000000'}
   ];
 
-  constructor(private navController: NavController, private _elementRef: ElementRef) {
-    this._socket = io.connect('http://localhost:8080');
+  constructor(private navController: NavController, private _elementRef: ElementRef, private configHolder : ConfigHolder) {
+    this._config = configHolder.config;
+
+    let serverUrl = 'http://localhost:8080'; // Default
+    if(typeof this._config["network"] != "undefined" &&
+      typeof this._config["network"]["socketUrl"] != "undefined") {
+      serverUrl = this._config["network"]["socketUrl"];
+    }
+    
+    this._socket = io.connect(serverUrl);
 
     this._socket.on("letter", (msg) => {
       console.log(msg);

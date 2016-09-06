@@ -71,7 +71,7 @@ process.on('SIGINT', function() {
 
 gulp.task('watch', ['clean'], function(done){
   runSequence(
-    ['sass', 'html', 'fonts', 'scripts'],
+    ['sass', 'html', 'fonts', 'scripts', 'configFile'],
     function(){
       gulpWatch('app/**/*.scss', function(){ gulp.start('sass'); });
       gulpWatch('app/**/*.html', function(){ gulp.start('html'); });
@@ -82,7 +82,7 @@ gulp.task('watch', ['clean'], function(done){
 
 gulp.task('build', ['clean'], function(done){
   runSequence(
-    ['sass', 'html', 'fonts', 'scripts'],
+    ['sass', 'html', 'fonts', 'scripts', 'configFile'],
     function(){
       buildBrowserify({
         minify: isRelease,
@@ -95,6 +95,11 @@ gulp.task('build', ['clean'], function(done){
       }).on('end', done);
     }
   );
+});
+
+// Copy the config file so it can be picked up by the ConfigHolder
+gulp.task('configFile', function() {
+  gulp.src('config.json')
 });
 
 gulp.task('sass', buildSass);
