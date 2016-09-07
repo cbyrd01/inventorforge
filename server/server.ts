@@ -3,6 +3,8 @@ import * as url from "url";
 import * as express from "express";
 import * as socketIO from "socket.io";
 import * as nconf from "nconf";
+import * as SerialPort from "serialport";
+
 
 // Load configuration options from command argument, environment, or config
 // file
@@ -19,6 +21,13 @@ nconf.defaults({
     "disable": true
   }
 });
+
+var serialPort : SerialPort;
+
+if(!nconf.get('serial:disable')) {
+  serialPort = new SerialPort(nconf.get('serial:port'), { baudrate: nconf.get('serial:baudrate') });
+}
+
 
 var app = express();
 
@@ -62,15 +71,29 @@ sio.on('connection', function (socket) {
     if(typeof data["red"] != "undefined") {
       state[letterNumber].red = data["red"];
       console.log("setting red to " + data["red"]);
+      sendSerial('r', Number(data["red"]).toString(16));
     }
     if(typeof data["green"] != "undefined") {
       state[letterNumber].green = data["green"];
       console.log("setting green to " + data["green"]);
+      sendSerial('g', Number(data["green"]).toString(16));
     }
     if(typeof data["blue"] != "undefined") {
       state[letterNumber].blue = data["blue"];
       console.log("setting blue to " + data["blue"]);
+      sendSerial('b', Number(data["blue"]).toString(16));
     }
     socket.broadcast.emit('letter', data);
   });
 });
+
+function sendSerial(command : string, hexValue : string) {
+  let message : string = command + hexValue + ";"
+  if(!nconf.get('serial:disable')) {
+    console.log("Sending message over serial: " + message);
+    serialPort.write(message);
+  }
+  else {
+    console.log("Skipping serial message: " + message);
+  }
+}
