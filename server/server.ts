@@ -67,25 +67,31 @@ sio.on('connection', function (socket) {
 
   socket.on('letter', function (data) {
     console.log(data);
-    let letterNumber = data["letter"];
+    let letterNumber : number = Number(data["letter"]);
     if(typeof data["red"] != "undefined") {
       state[letterNumber].red = data["red"];
       console.log("setting red to " + data["red"]);
-      sendSerial(Number(letterNumber), 'r', data["red"]);
+      setAllLettersSerial(letterNumber);
     }
     if(typeof data["green"] != "undefined") {
       state[letterNumber].green = data["green"];
       console.log("setting green to " + data["green"]);
-      sendSerial(Number(letterNumber), 'g', data["green"]);
+      setAllLettersSerial(letterNumber);
     }
     if(typeof data["blue"] != "undefined") {
       state[letterNumber].blue = data["blue"];
       console.log("setting blue to " + data["blue"]);
-      sendSerial(Number(letterNumber), 'b', data["blue"]);
+      setAllLettersSerial(letterNumber);
     }
     socket.broadcast.emit('letter', data);
   });
 });
+
+function setAllLettersSerial(letterNumber: number) {
+  sendSerial(letterNumber, 'r', state[letterNumber].red);
+  sendSerial(letterNumber, 'g', state[letterNumber].green);
+  sendSerial(letterNumber, 'b', state[letterNumber].blue);
+}
 
 function sendSerial(letterNumber: number, command : string, colorValue : string) {
   let hexValue = Number(colorValue).toString(16);
