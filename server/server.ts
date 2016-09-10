@@ -88,20 +88,22 @@ sio.on('connection', function (socket) {
 });
 
 function setAllLettersSerial(letterNumber: number) {
-  sendSerial(letterNumber, 'r', state[letterNumber].red);
-  sendSerial(letterNumber, 'g', state[letterNumber].green);
-  sendSerial(letterNumber, 'b', state[letterNumber].blue);
+  if(!nconf.get('serial:disable')) {
+    console.log("Sending letter number " + letterNumber);
+    serialPort.write("l0" + letterNumber + ";");
+    sendSerial(letterNumber, 'r', state[letterNumber].red);
+    sendSerial(letterNumber, 'g', state[letterNumber].green);
+    sendSerial(letterNumber, 'b', state[letterNumber].blue);
+  }
 }
 
-function sendSerial(letterNumber: number, command : string, colorValue : string) {
-  let hexValue = Number(colorValue).toString(16);
+function sendSerial(letterNumber: number, command : string, colorValue : number) {
+  let hexValue = colorValue.toString(16);
   if(hexValue.length < 2 ) {
     hexValue = "0" + hexValue;
   }
   let message : string = command + hexValue + ";"
   if(!nconf.get('serial:disable')) {
-    console.log("Sending letter number " + letterNumber);
-    serialPort.write("l0" + letterNumber + ";");
     console.log("Sending message over serial: " + message);
     serialPort.write(message);
   }

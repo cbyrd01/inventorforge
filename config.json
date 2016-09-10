@@ -7,6 +7,6 @@
   "serial": {
     "disable": false,
     "port": "/dev/ttyACM0",
-    "baudrate": 115200
+    "baudrate": 38400
   }
 }
