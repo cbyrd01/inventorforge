@@ -71,25 +71,31 @@ sio.on('connection', function (socket) {
     if(typeof data["red"] != "undefined") {
       state[letterNumber].red = data["red"];
       console.log("setting red to " + data["red"]);
-      sendSerial('r', Number(data["red"]).toString(16));
+      sendSerial(Number(letterNumber), 'r', data["red"]);
     }
     if(typeof data["green"] != "undefined") {
       state[letterNumber].green = data["green"];
       console.log("setting green to " + data["green"]);
-      sendSerial('g', Number(data["green"]).toString(16));
+      sendSerial(Number(letterNumber), 'g', data["green"]);
     }
     if(typeof data["blue"] != "undefined") {
       state[letterNumber].blue = data["blue"];
       console.log("setting blue to " + data["blue"]);
-      sendSerial('b', Number(data["blue"]).toString(16));
+      sendSerial(Number(letterNumber), 'b', data["blue"]);
     }
     socket.broadcast.emit('letter', data);
   });
 });
 
-function sendSerial(command : string, hexValue : string) {
+function sendSerial(letterNumber: number, command : string, colorValue : string) {
+  let hexValue = Number(colorValue).toString(16);
+  if(hexValue.length < 2 ) {
+    hexValue = "0" + hexValue;
+  }
   let message : string = command + hexValue + ";"
   if(!nconf.get('serial:disable')) {
+    console.log("Sending letter number " + letterNumber);
+    serialPort.write("l0" + letterNumber + ";");
     console.log("Sending message over serial: " + message);
     serialPort.write(message);
   }
