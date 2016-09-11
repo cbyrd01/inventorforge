@@ -22,19 +22,19 @@
   </div>
 <div class="card-body">
 <ion-item>
-  <ion-range min="0" max="255" pin="true" [ngModel]="letter.red" (ngModelChange)="setRed($event, i)" danger>
+  <ion-range min="0" max="255" pin="true" [ngModel]="letter.red" [formControl]="redControl" danger>
    <ion-icon range-left small name="sunny" danger></ion-icon>
    <ion-icon range-right name="sunny" danger></ion-icon>
   </ion-range>
 </ion-item>
 <ion-item>
-  <ion-range min="0" max="255" pin="true" [ngModel]="letter.green" (ngModelChange)="setGreen($event, i)" secondary>
+  <ion-range min="0" max="255" pin="true" [ngModel]="letter.green" [formControl]="greenControl" secondary>
    <ion-icon range-left small name="sunny" secondary></ion-icon>
    <ion-icon range-right name="sunny" secondary></ion-icon>
   </ion-range>
 </ion-item>
 <ion-item>
-  <ion-range min="0" max="255" pin="true" [ngModel]="letter.blue" (ngModelChange)="setBlue($event, i)">
+  <ion-range min="0" max="255" pin="true" [ngModel]="letter.blue" [formControl]="blueControl">
    <ion-icon range-left small name="sunny" primary></ion-icon>
    <ion-icon range-right name="sunny" primary></ion-icon>
   </ion-range>

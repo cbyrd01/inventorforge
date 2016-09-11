@@ -4,6 +4,9 @@ import {Slides} from 'ionic-angular';
 import {waitRendered} from './util';
 import {Letter} from '../../models/letter.interface';
 import {ConfigHolder} from '../../providers/config/configholder';
+import {FormControl} from '@angular/forms';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/debounceTime';
 import * as io from 'socket.io-client';
 
 
@@ -14,6 +17,10 @@ export class SignPage {
 
   private _socket: any;
   private _config: any;
+
+  redControl   = new FormControl();
+  greenControl = new FormControl();
+  blueControl  = new FormControl();
 
   @ViewChild('letterSlider') letterSlider: Slides;
 
@@ -61,6 +68,27 @@ export class SignPage {
       let swiper = this.letterSlider.getSlider();
       swiper.update();
     });
+
+  }
+
+  public ngAfterViewInit() {
+    // Use debounce to reduce the number of values sent
+    this.redControl.valueChanges.debounceTime(this._config["input"]["debounce"])
+    .subscribe(newValue => {
+      console.log("Red set to " + newValue + " on " + this.letterSlider.getActiveIndex());
+      this.setRed(newValue, this.letterSlider.getActiveIndex());
+    });
+    this.greenControl.valueChanges.debounceTime(this._config["input"]["debounce"])
+    .subscribe(newValue => {
+      console.log("Green set to " + newValue + " on " + this.letterSlider.getActiveIndex());
+      this.setGreen(newValue, this.letterSlider.getActiveIndex());
+    });
+    this.blueControl.valueChanges.debounceTime(this._config["input"]["debounce"])
+    .subscribe(newValue => {
+      console.log("Blue set to " + newValue + " on " + this.letterSlider.getActiveIndex());
+      this.setBlue(newValue, this.letterSlider.getActiveIndex());
+    });
+
   }
 
   public nextSlide() {
