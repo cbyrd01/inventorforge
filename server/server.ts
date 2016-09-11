@@ -109,6 +109,20 @@ function setLetter(socket : any, data : any) {
   socket.broadcast.emit('letter', data);
 }
 
+function setGearOn() {
+  if(!nconf.get('serial:disable')) {
+    // s=special, 1=gear, 01=on, 0000=unused
+    serialPort.write('s1010000;');
+  }
+}
+
+function setGearOff() {
+  if(!nconf.get('serial:disable')) {
+    // s=special, 1=gear, 00=off, 0000=unused
+    serialPort.write('s1000000;');
+  }
+}
+
 function setAllLettersSerial(letterNumber: number) {
   if(!nconf.get('serial:disable')) {
     serialPort.write('c' + letterNumber + 
