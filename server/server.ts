@@ -89,19 +89,18 @@ sio.on('connection', function (socket) {
 
 function setAllLettersSerial(letterNumber: number) {
   if(!nconf.get('serial:disable')) {
-    serialPort.write("l0" + letterNumber + ";" +
-      parseSerial(letterNumber, 'r', state[letterNumber].red) +
-      parseSerial(letterNumber, 'g', state[letterNumber].green) +
-      parseSerial(letterNumber, 'b', state[letterNumber].blue)
+    serialPort.write('c' + letterNumber + 
+      parseSerial(state[letterNumber].red) +
+      parseSerial(state[letterNumber].green) +
+      parseSerial(state[letterNumber].blue) + ';'
     );
   }
 }
 
-function parseSerial(letterNumber: number, command : string, colorValue : number) : string {
-  let hexValue = colorValue.toString(16);
+function parseSerial(colorValue : number) : string {
+  let hexValue : string = colorValue.toString(16);
   if(hexValue.length < 2 ) {
     hexValue = "0" + hexValue;
   }
-  let message : string = command + hexValue + ";"
-  return message;
+  return hexValue;
 }
