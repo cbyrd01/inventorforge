@@ -8,19 +8,12 @@ import * as SerialPort from "serialport";
 
 // Load configuration options from command argument, environment, or config
 // file
-nconf.argv().env().file({ file: 'config.json' });
-// Set some defaults.  NOTE: disable is set to true both in here and the
-// default config.json file - edit or set through arguments or environment to
-// enable
-nconf.defaults({
-  "network": {
-    "port": 8080,
-    "host": "0.0.0.0"
-  },
-  "serial": {
-    "disable": true
-  }
-});
+
+nconf.argv().env();
+
+let environment = nconf.get('NODE_ENV') || 'development';
+nconf.file(environment, './config/' + environment.toLowerCase() + '.json');
+nconf.file('default', './config/default.json');
 
 var serialPort : SerialPort;
 

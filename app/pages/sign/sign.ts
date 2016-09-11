@@ -36,9 +36,9 @@ export class SignPage {
     this._config = configHolder.config;
 
     let serverUrl = 'http://localhost:8080'; // Default
-    if(typeof this._config["network"] != "undefined" &&
-      typeof this._config["network"]["socketUrl"] != "undefined") {
-      serverUrl = this._config["network"]["socketUrl"];
+    if(typeof this._config["client"] != "undefined" &&
+      typeof this._config["client"]["socketUrl"] != "undefined") {
+      serverUrl = this._config["client"]["socketUrl"];
     }
     
     this._socket = io.connect(serverUrl);
@@ -73,17 +73,17 @@ export class SignPage {
 
   public ngAfterViewInit() {
     // Use debounce to reduce the number of values sent
-    this.redControl.valueChanges.debounceTime(this._config["input"]["debounce"])
+    this.redControl.valueChanges.debounceTime(this._config["client"]["debounce"])
     .subscribe(newValue => {
       console.log("Red set to " + newValue + " on " + this.letterSlider.getActiveIndex());
       this.setRed(newValue, this.letterSlider.getActiveIndex());
     });
-    this.greenControl.valueChanges.debounceTime(this._config["input"]["debounce"])
+    this.greenControl.valueChanges.debounceTime(this._config["client"]["debounce"])
     .subscribe(newValue => {
       console.log("Green set to " + newValue + " on " + this.letterSlider.getActiveIndex());
       this.setGreen(newValue, this.letterSlider.getActiveIndex());
     });
-    this.blueControl.valueChanges.debounceTime(this._config["input"]["debounce"])
+    this.blueControl.valueChanges.debounceTime(this._config["client"]["debounce"])
     .subscribe(newValue => {
       console.log("Blue set to " + newValue + " on " + this.letterSlider.getActiveIndex());
       this.setBlue(newValue, this.letterSlider.getActiveIndex());

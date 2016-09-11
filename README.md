@@ -50,12 +50,18 @@ node server/server.js
 
 ## Configuration
 
-The main configuration is stored in `config.json`.  Configuration can also be
-specified via command line argument or environment variables.  See
+The main configuration is stored in the configuration files in the `config/` 
+directory. Which file is used depends on the value of the `NODE_ENV` environment
+variable. (i.e. setting `NODE_ENV` to "production" uses the `production.json` file.
+The default environment is "development".
+
+Configuration can also be specified via command line argument or environment 
+variables.  See
 [nconf](https://www.npmjs.com/package/nconf) for information on how these are
 set.
 
-Note: By default `serial:disable` is set to `true`.  To use on a sign, this
-must be set to false and `serial:port` and other options set appropriately.
+Note: By default `serial:disable` is set to `true` in development.  To use on a 
+sign locally, this must be set to false and `serial:port` and other options set 
+appropriately.
 
 

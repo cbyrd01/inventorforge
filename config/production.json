@@ -1,0 +1,14 @@
+{
+  "network": {
+    "port": 80,
+    "host": "0.0.0.0"
+  },
+  "serial": {
+    "disable": false,
+    "port": "/dev/ttyACM0",
+    "baudrate": 19200
+  },
+  "client": {
+    "socketUrl": "http://sign.inventorforgemakerspace.org"
+  }
+}

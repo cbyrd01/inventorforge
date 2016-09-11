@@ -97,9 +97,22 @@ gulp.task('build', ['clean'], function(done){
   );
 });
 
+var fs = require('fs');
+
 // Copy the config file so it can be picked up by the ConfigHolder
-gulp.task('configFile', function() {
-  gulp.src('config.json')
+gulp.task('configFile', function(cb) {
+  var nconf = require('nconf');
+  nconf.argv().env();
+  var environment = nconf.get('NODE_ENV') || 'development';
+  nconf.file(environment, './config/' + environment.toLowerCase() + '.json');
+  nconf.file('default', './config/default.json');
+  var client = {"client": nconf.get('client') };
+  var clientContents = JSON.stringify(client);
+  fs.writeFile('generated/config.json', clientContents, function(err) {
+    if(err) throw err;
+    gulp.src('generated/config.json');
+    cb();
+  });
 });
 
 gulp.task('sass', buildSass);

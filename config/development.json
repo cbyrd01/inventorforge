@@ -1,0 +1,14 @@
+{
+  "network": {
+    "port": 8080,
+    "host": "0.0.0.0"
+  },
+  "serial": {
+    "disable": true,
+    "port": "/dev/ttyACM0",
+    "baudrate": 38400
+  },
+  "client": {
+    "socketUrl": "http://localhost:8080"
+  }
+}
