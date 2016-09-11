@@ -1,0 +1,20 @@
+<ion-content>
+<ion-list>
+  <ion-list-header>
+    Sign Settings
+  </ion-list-header>
+
+  <ion-item>
+    <ion-label>Spin Gear</ion-label>
+    <ion-toggle (ngModelChange)="gearChanged($event)" [(ngModel)]="gear" checked="true" value="gear"></ion-toggle>
+  </ion-item>
+
+  <ion-item>
+    <button (click)="allOn()" full>All Lights On</button>
+  </ion-item>
+
+  <ion-item>
+    <button (click)="allOff()" full>All Lights Off</button>
+  </ion-item>
+</ion-list>
+</ion-content>

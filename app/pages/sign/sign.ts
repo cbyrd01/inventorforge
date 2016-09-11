@@ -1,5 +1,5 @@
 import {Component, ViewChild, ElementRef, OnInit} from '@angular/core';
-import {NavController} from 'ionic-angular';
+import {NavController, PopoverController} from 'ionic-angular';
 import {Slides} from 'ionic-angular';
 import {waitRendered} from './util';
 import {Letter} from '../../models/letter.interface';
@@ -8,6 +8,7 @@ import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/debounceTime';
 import * as io from 'socket.io-client';
+import {SignPopoverPage} from '../../components/sign-popover-page/sign-popover-page';
 
 
 @Component({
@@ -22,6 +23,8 @@ export class SignPage {
   greenControl = new FormControl();
   blueControl  = new FormControl();
 
+  gear : boolean = false;
+
   @ViewChild('letterSlider') letterSlider: Slides;
 
   public letters: Letter[] = [
@@ -32,7 +35,9 @@ export class SignPage {
     {label: 'E', red: 0, green: 0, blue: 0, bgcolor: '#000000'}
   ];
 
-  constructor(private navController: NavController, private _elementRef: ElementRef, private configHolder : ConfigHolder) {
+
+
+  constructor(private navController: NavController, private _elementRef: ElementRef, private configHolder : ConfigHolder, private popoverCtrl: PopoverController) {
     this._config = configHolder.config;
 
     let serverUrl = 'http://localhost:8080'; // Default
@@ -42,6 +47,13 @@ export class SignPage {
     }
     
     this._socket = io.connect(serverUrl);
+
+    this._socket.on("gear", (msg) => {
+      console.log("received gear message");
+      if(msg.gear != undefined) {
+        this.setGear(msg.gear, false);
+      }
+    });
 
     this._socket.on("letter", (msg) => {
       console.log(msg);
@@ -58,6 +70,28 @@ export class SignPage {
 
     this._socket.on("connect", (msg) => {
       console.log("Connected!");
+    });
+  }
+
+  presentPopover(myEvent) {
+    console.log("popover start " + this.gear);
+    let popover = this.popoverCtrl.create(SignPopoverPage, {
+      gearCallback: function(_data) {
+        this.setGear(_data["gear"]);
+        console.log("New gear value: " + this.gear);
+      }.bind(this),
+      allOnCallback: function() {
+        this.setAllOn();
+        console.log("all on!");
+      }.bind(this),
+      allOffCallback: function() {
+        this.setAllOff();
+        console.log("all off!");
+      }.bind(this),
+      gear: this.gear
+    });
+    popover.present({
+      ev: myEvent
     });
   }
 
@@ -97,6 +131,35 @@ export class SignPage {
 
   public prevSlide() {
     this.letterSlider.slidePrev();
+  }
+
+  public setGear(newValue: boolean, update: boolean = true) {
+    this.gear = newValue;
+    if(update) {
+      this._socket.emit('gear', {gear: newValue});
+    }
+  }
+
+  public setAllOn(update: boolean = true) {
+    for(let i=0;i<this.letterSlider.length();i++) {
+      this.setRed(255, i, false);
+      this.setGreen(255, i, false);
+      this.setBlue(255, i, false);
+    }
+    if(update) {
+      this._socket.emit('allon', {});
+    }
+  }
+
+  public setAllOff(update: boolean = true) {
+    for(let i=0;i<this.letterSlider.length();i++) {
+      this.setRed(0, i, false);
+      this.setGreen(0, i, false);
+      this.setBlue(0, i, false);
+    }
+    if(update) {
+      this._socket.emit('alloff', {});
+    }
   }
 
 

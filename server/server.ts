@@ -28,6 +28,8 @@ var server = http.Server(app);
 
 var sio = socketIO(server);
 
+var gear : boolean;
+
 var state : {letter: number, red: number, green: number, blue: number}[] = [
   {letter: 0, red: 0, green: 0, blue: 0},
   {letter: 1, red: 0, green: 0, blue: 0}, 
@@ -58,27 +60,54 @@ sio.on('connection', function (socket) {
     socket.emit('letter', letter);
   }
 
+  socket.on('gear', function (data) {
+    console.log("calling gear.");
+    if(typeof data["gear"] != "undefined") {
+      gear = data["gear"];
+      console.log("setting ear to " + data["gear"]);
+    }
+    socket.broadcast.emit('gear', data);
+  });
+
+  socket.on('allon', function(data) {
+    console.log("received allon");
+    for(let i in state) {
+      setLetter( socket, { "letter": i, "red": 255, "green": 255, "blue": 255} );
+    }
+  });
+
+  socket.on('alloff', function(data) {
+    console.log("received alloff");
+    for(let i in state) {
+      setLetter( socket, { "letter": i, "red": 0, "green": 0, "blue": 0} );
+    }
+  });
+
   socket.on('letter', function (data) {
     console.log(data);
-    let letterNumber : number = Number(data["letter"]);
-    if(typeof data["red"] != "undefined") {
-      state[letterNumber].red = data["red"];
-      console.log("setting red to " + data["red"]);
-      setAllLettersSerial(letterNumber);
-    }
-    if(typeof data["green"] != "undefined") {
-      state[letterNumber].green = data["green"];
-      console.log("setting green to " + data["green"]);
-      setAllLettersSerial(letterNumber);
-    }
-    if(typeof data["blue"] != "undefined") {
-      state[letterNumber].blue = data["blue"];
-      console.log("setting blue to " + data["blue"]);
-      setAllLettersSerial(letterNumber);
-    }
-    socket.broadcast.emit('letter', data);
+    setLetter(socket, data);
   });
 });
+
+function setLetter(socket : any, data : any) {
+  let letterNumber : number = Number(data["letter"]);
+  if(typeof data["red"] != "undefined") {
+    state[letterNumber].red = data["red"];
+    console.log("setting red to " + data["red"]);
+    setAllLettersSerial(letterNumber);
+  }
+  if(typeof data["green"] != "undefined") {
+    state[letterNumber].green = data["green"];
+    console.log("setting green to " + data["green"]);
+    setAllLettersSerial(letterNumber);
+  }
+  if(typeof data["blue"] != "undefined") {
+    state[letterNumber].blue = data["blue"];
+    console.log("setting blue to " + data["blue"]);
+    setAllLettersSerial(letterNumber);
+  }
+  socket.broadcast.emit('letter', data);
+}
 
 function setAllLettersSerial(letterNumber: number) {
   if(!nconf.get('serial:disable')) {
