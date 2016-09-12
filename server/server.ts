@@ -126,7 +126,7 @@ function sendAllOn(socket : any) {
     // s=special, 3=allon, 000000=unused
     serialPort.write('s3000000;');
   }
-  socket.broadcast.emit('allon', data);
+  socket.broadcast.emit('allon', {});
 }
 
 function sendAllOff(socket : any) {
@@ -134,7 +134,7 @@ function sendAllOff(socket : any) {
     // s=special, 3=alloff, 000000=unused
     serialPort.write('s4000000;');
   }
-  socket.broadcast.emit('alloff', data);
+  socket.broadcast.emit('alloff', {});
 }
 
 function setGearOn() {
