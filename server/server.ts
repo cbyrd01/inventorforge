@@ -78,15 +78,21 @@ sio.on('connection', function (socket) {
   socket.on('allon', function(data) {
     console.log("received allon");
     for(let i in state) {
-      setLetter( socket, { "letter": i, "red": 255, "green": 255, "blue": 255} );
+      state[i].red   = 255;
+      state[i].green = 255;
+      state[i].blue  = 255;
     }
+    sendAllOn( socket );
   });
 
   socket.on('alloff', function(data) {
     console.log("received alloff");
     for(let i in state) {
-      setLetter( socket, { "letter": i, "red": 0, "green": 0, "blue": 0} );
+      state[i].red   = 0;
+      state[i].green = 0;
+      state[i].blue  = 0;
     }
+    sendAllOff( socket );
   });
 
   socket.on('letter', function (data) {
@@ -113,6 +119,22 @@ function setLetter(socket : any, data : any) {
     setAllLettersSerial(letterNumber);
   }
   socket.broadcast.emit('letter', data);
+}
+
+function sendAllOn(socket : any) {
+  if(!nconf.get('serial:disable')) {
+    // s=special, 3=allon, 000000=unused
+    serialPort.write('s3000000;');
+  }
+  socket.broadcast.emit('allon', data);
+}
+
+function sendAllOff(socket : any) {
+  if(!nconf.get('serial:disable')) {
+    // s=special, 3=alloff, 000000=unused
+    serialPort.write('s4000000;');
+  }
+  socket.broadcast.emit('alloff', data);
 }
 
 function setGearOn() {

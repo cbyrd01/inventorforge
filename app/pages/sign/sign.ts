@@ -55,6 +55,16 @@ export class SignPage {
       }
     });
 
+    this._socket.on("allon", (msg) => {
+      console.log("received allon message");
+      this.setAllOn(false);
+    });
+
+    this._socket.on("alloff", (msg) => {
+      console.log("received alloff message");
+      this.setAllOff(false);
+    });
+
     this._socket.on("letter", (msg) => {
       console.log(msg);
       if(msg.red != undefined) {
