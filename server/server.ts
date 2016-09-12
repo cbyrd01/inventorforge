@@ -66,6 +66,12 @@ sio.on('connection', function (socket) {
       gear = data["gear"];
       console.log("setting ear to " + data["gear"]);
     }
+    if(data["gear"] == true) {
+      setGearOn();
+    }
+    else {
+      setGearOff();
+    }
     socket.broadcast.emit('gear', data);
   });
 
