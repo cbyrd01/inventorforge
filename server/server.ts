@@ -24,6 +24,9 @@ if(!nconf.get('serial:disable')) {
 
 var app = express();
 
+
+
+
 var server = http.Server(app);
 
 var sio = socketIO(server);
@@ -36,6 +39,34 @@ var state : {letter: number, red: number, green: number, blue: number}[] = [
   {letter: 2, red: 0, green: 0, blue: 0},
   {letter: 3, red: 0, green: 0, blue: 0},
   {letter: 4, red: 0, green: 0, blue: 0}];
+
+app.get("/light/all/:status", (req : any, res : any ) => {
+  let statusstr : string = req.params["status"];
+  if(statusstr == "on") {
+    console.log("Setting all lights on");
+    setAllOn();
+    sio.sockets.emit('allon', {});
+  }
+  else if(statusstr == "off") {
+    console.log("Setting all lights off");
+    setAllOff();
+    sio.sockets.emit('alloff', {});
+  }
+  res.send(req.params);
+});
+
+app.get("/gear/:status", (req : any, res : any ) => {
+  let statusstr : string = req.params["status"];
+  if(statusstr == "on") {
+    setGearOn();
+    sio.sockets.emit('gear', {"gear" : true});
+  }
+  else if(statusstr == "off") {
+    setGearOff();
+    sio.sockets.emit('gear', {"gear" : false});
+  }
+  res.send(req.params);
+});
 
 app.use(express.static('www'));
 
@@ -77,21 +108,11 @@ sio.on('connection', function (socket) {
 
   socket.on('allon', function(data) {
     console.log("received allon");
-    for(let i in state) {
-      state[i].red   = 255;
-      state[i].green = 255;
-      state[i].blue  = 255;
-    }
     sendAllOn( socket );
   });
 
   socket.on('alloff', function(data) {
     console.log("received alloff");
-    for(let i in state) {
-      state[i].red   = 0;
-      state[i].green = 0;
-      state[i].blue  = 0;
-    }
     sendAllOff( socket );
   });
 
@@ -121,19 +142,37 @@ function setLetter(socket : any, data : any) {
   socket.broadcast.emit('letter', data);
 }
 
-function sendAllOn(socket : any) {
+function setAllOn() {
+  for(let i in state) {
+    state[i].red   = 255;
+    state[i].green = 255;
+    state[i].blue  = 255;
+  }
   if(!nconf.get('serial:disable')) {
     // s=special, 3=allon, 000000=unused
     serialPort.write('s3000000;');
   }
+}
+
+function sendAllOn(socket : any) {
+  setAllOn();
   socket.broadcast.emit('allon', {});
 }
 
-function sendAllOff(socket : any) {
+function setAllOff() {
+  for(let i in state) {
+    state[i].red   = 0;
+    state[i].green = 0;
+    state[i].blue  = 0;
+  }
   if(!nconf.get('serial:disable')) {
     // s=special, 3=alloff, 000000=unused
     serialPort.write('s4000000;');
   }
+}
+
+function sendAllOff(socket : any) {
+  setAllOff();
   socket.broadcast.emit('alloff', {});
 }
 
