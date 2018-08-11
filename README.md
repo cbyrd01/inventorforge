@@ -64,4 +64,9 @@ Note: By default `serial:disable` is set to `true` in development.  To use on a
 sign locally, this must be set to false and `serial:port` and other options set 
 appropriately.
 
-
+# TODO
+Remove refernces to door control
+Simplify command structure
+Replace serial with I2C
+Add new modes
+Investigate hold-down for updates
