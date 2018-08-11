@@ -6,7 +6,7 @@
   "serial": {
     "disable": false,
     "port": "/dev/ttyACM0",
-    "baudrate": 19200
+    "baudrate": 9600
   },
   "client": {
     "socketUrl": "http://sign.inventorforgemakerspace.org"

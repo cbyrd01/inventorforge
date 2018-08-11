@@ -1,14 +1,14 @@
 {
   "network": {
-    "port": 8080,
+    "port": 80,
     "host": "0.0.0.0"
   },
   "serial": {
-    "disable": true,
+    "disable": false,
     "port": "/dev/ttyACM0",
-    "baudrate": 38400
+    "baudrate": 9600
   },
   "client": {
-    "socketUrl": "http://localhost:8080"
+    "socketUrl": "http://sign.inventorforgemakerspace.org"
   }
 }
