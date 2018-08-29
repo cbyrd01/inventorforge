@@ -65,8 +65,8 @@ sign locally, this must be set to false and `serial:port` and other options set
 appropriately.
 
 # TODO
-Remove refernces to door control
-Simplify command structure
-Replace serial with I2C
-Add new modes
-Investigate hold-down for updates
+1. ~~Remove refernces to door control~~
+1. Simplify command structure
+1. Replace serial with I2C
+1. Add new modes
+1. Investigate hold-down for updates
